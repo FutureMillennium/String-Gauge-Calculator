@@ -1,0 +1,354 @@
+<html>
+<head>
+  <title>String gauge calculator v1.22</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <meta name="author" content="Zdeněk Gromnica" /> 
+  <meta name="Description" content="" /> 
+  <meta name="copyright" content="© 2010 Zdeněk Gromnica" /> 
+  <meta name="content-language" content="en" /> 
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+  <style>
+body {
+  margin: 25px 25px 60px 25px;
+  font-family: Segoe UI, Tahoma, sans-serif;
+  color: #000;
+  background: #fff;
+  font-size: 14px;
+}
+a {
+  color: #0cf;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+input {
+  font-family: Segoe UI, Tahoma, sans-serif;
+}
+table {
+  border-collapse: collapse;
+}
+table td {
+  border: 1px #ccc solid;
+  padding: 3px 5px;
+  min-width: 50px;
+  text-align: center;
+}
+table th {
+  border: 1px #ccc solid;
+  padding: 3px 5px;
+  background: #eee;
+}
+table td.first {
+  font-weight: bold;
+  background: #eee;
+  text-align: right;
+}
+button {
+  padding: 12px 16px;
+}
+table input {
+  text-align: center;
+}
+.centeri {
+  text-align: center;
+}
+.righti {
+  text-align: right;
+}
+h1 {
+  margin: 10px 0 5px 0;
+}
+h2 {
+  margin: 40px 0 10px 0;
+}
+#footer {
+  padding-top: 20px;
+  font-size: 80%;
+  color: #ccc;
+}
+.abutton {
+  display: inline-block;
+  padding: 5px;
+  background: #0cf;
+  color: #fff;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.hidden {
+  display: none;
+}
+#noinfo {
+  color: #f00;
+  display: none;
+}
+acronym {
+  border-bottom: 1px #000 dotted;
+}
+#output {
+  display: none;
+}
+</style>
+</head>
+<body>
+<h1 id="top">String gauge calculator</h1>
+
+<p>Version 1.22 by <a href="http://future.millenniumweb.net/">Zdeněk Gromnica a.k.a. FutureMillennium</a>. JavaScript must be enabled.</p>
+
+<p><a href="#calculate-string-gauges" class="abutton">Calculate string gauges</a></p>
+
+<h2>Info</h2>
+
+<h3><a href="#" onClick="$('#tonetable').slideToggle(500); return false;">Tones and their frequencies »</a></h3>
+
+<div id="tonetable" class="hidden">
+<table>
+<script>
+var notes = new Array("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B");
+var frequencies = new Array();
+var tnotes = new Array();
+var tnote = 0;
+var toctave = -1;
+document.write("<tr><th></th>");
+for (var i = 0; i < 12; i++) {
+  document.write("<th>"+notes[i]+"</th>")
+}
+document.write("</tr>");
+for (var i = -20; i < 148; i++) {
+  if (tnote == 0) {
+    document.write("<tr><td class=\"first\">"+toctave+"</td>");
+  }
+    
+  var tfrequency = 440 * Math.pow(Math.pow(2, i - 49), 1/12);
+  frequencies.push(tfrequency);
+  tnotes.push(notes[tnote]+toctave);
+  var tfreq = tfrequency.toFixed(2);
+  document.write("<td>"+tfreq+"</td>");
+  tnote++;
+  
+  if (tnote == 12) {
+    tnote = 0;
+    toctave++;
+    document.write("</tr>");
+  }
+}
+</script>
+</table>
+</div>
+
+<h3>Tunings and scale lengths</h3>
+
+<p>Standard instrument tunings, from low to high:</p>
+<ul>
+  <li><strong>Guitar:</strong> E2 A2 D3 G3 B3 E4</li>
+  <li><strong>Violin/Mandolin:</strong> G3 D4 A4 E5</li>
+  <li><strong>Viola:</strong> C3 G3 D4 A4</li>
+  <li><strong>Cello:</strong> C2 G2 D3 A3</li>
+  <li><strong>Bass Guitar/Double Bass:</strong> E1 A1 D2 G2</li>
+</ul>
+
+<p>Standard instrument scale lengths:</p>
+<ul>
+  <li><strong>Classical Guitar:</strong> <a href="#" onclick="ChangeScale(25.6); return false;">25.6 in</a> (<a href="#" onclick="ChangeScale2(650); return false;">650 mm</a>)</li>
+  <li><strong>Fender Electric Guitar: </strong> <a href="#" onclick="ChangeScale(25.5); return false;">25.5 in</a></li>
+  <li><strong>Gibson Electric Guitar: </strong> <a href="#" onclick="ChangeScale(24.75); return false;">24.75 in</a></li>
+  <li><strong>Violin:</strong> <a href="#" onclick="ChangeScale(12.8); return false;">12.8 in</a> (<a href="#" onclick="ChangeScale2(327); return false;">327 mm</a>)</li>
+  <li><strong>Double Bass:</strong> <a href="#" onclick="ChangeScale(42.3); return false;">42.3</a>-<a href="#" onclick="ChangeScale(43.3); return false;">43.3 in</a> (<a href="#" onclick="ChangeScale2(1050); return false;">1050</a>–<a href="#" onclick="ChangeScale2(1100); return false;">1100 mm</a>)</li>
+  <li><strong>Mandolin:</strong> <a href="#" onclick="ChangeScale(13); return false;">13</a>-<a href="#" onclick="ChangeScale(13.875); return false;">13.875 in</a> (<a href="#" onclick="ChangeScale2(330); return false;">330</a>-<a href="#" onclick="ChangeScale2(352); return false;">352 mm</a>)</li>
+</ul>
+
+<h2 id="calculate-string-gauges">Calculate string gauges</h2>
+
+<p><span class="param"><label for="scale"><strong>Scale length:</strong> <input type="text" class="righti" size="5" id="scale" value="25.5" /> inch</label> <label for="scale2"><input type="text" class="righti" size="5" id="scale2" value="647.70" /> mm</label></span><br />
+<span class="param"><label for="otension"><strong>Desired tension:</strong> <input type="text" class="righti" size="5" id="otension" value="22.5" /> lbs</label> <label for="otension2"><input type="text" class="righti" size="5" id="otension2" value="100" /> newtons</label></span><br />
+<span class="param"><strong>String type:</strong>
+  <label for="type-0"><input type="radio" name="stringtype" onchange="ChangeMaterial(7800, 0.9);" id="type-0" value="0" checked="checked" /> Steel/Iron</label>
+  <label for="type-1"><input type="radio" name="stringtype" onchange="ChangeMaterial(8600, -1);" id="type-1" value="0" /> Brass</label>
+  <label for="type-2"><input type="radio" name="stringtype" onchange="ChangeMaterial(1791, -1);" id="type-2" value="0" /> <acronym title="high density hydrocarbon polymer">Carbon</acronym></label>
+  <label for="type-3"><input type="radio" name="stringtype" onchange="ChangeMaterial(1300, -1);" id="type-3" value="0" /> Gut</label>
+  <label for="type-4"><input type="radio" name="stringtype" onchange="ChangeMaterial(1260, -1);" id="type-4" value="0" /> Nylgut</label>
+  <label for="type-5"><input type="radio" name="stringtype" onchange="ChangeMaterial(1040, -1);" id="type-5" value="0" /> Nylon</label>
+</span><br />
+<span class="param"><label for="density">Material density: <input type="text" class="righti" id="density" value="7800" size="5" /> kg/m<sup>3</sup></label></span><br />
+<span class="param"><label for="kfactor">K-factor: <input type="text" class="righti" onchange="calculate();" size="5" id="kfactor" value="0.9" /></label> <span id="noinfo"><strong>Warning:</strong> We have no information about the K-factor of the selected string type. If you don't know the correct K-factor, the calculation for <strong>wound strings</strong> will be wrong.</span></span>
+</p>
+
+<table id="stringstable">
+  <tr>
+    <th></th>
+    <th>Note</th>
+    <th>Frequency</th>
+    <th>Plain or wound</th>
+    <th>Tension</th>
+    <th>Gauge (inch)</th>
+    <th>Gauge (mm)</th>
+  </tr>
+  <tr class="stringtr">
+    <td><span class="snumber">1.</span></td>
+    <td><input type="text" class="note" size="5" value="A4" /> <a href="#" onclick="DownSome(this, 1); return false;">◄</a> <a href="#" onclick="UpSome(this, 1); return false;">►</a> <a href="#" onclick="DownSome(this, 12); return false;">▼</a> <a href="#" onclick="UpSome(this, 12); return false;">▲</a></td>
+    <td><label for="frequency"><input type="text" size="10" class="frequency" value="440" /> Hz</label></td>
+    <td><label for="wound0-0"><input type="radio" name="wound" class="wound" onchange="calculate();" id="wound0-0" value="0" checked="checked" /> Plain</label> <label for="wound0-1"><input type="radio" name="wound" class="wound" onchange="calculate();" id="wound0-1" value="1" /> Wound</label></td>
+    <td><label for="tension"><input type="text" class="tension" size="5" value="22.5" /> lbs</label> <input type="text" class="tension2" size="5" value="100" /> N</label></td>
+    <td><span class="result">0.009 inch</span></td>
+    <td><span class="result2">0.224 mm</span></td>
+  </tr>
+</table>
+
+<div id="output">
+<p><label for="option0"><input type="checkbox" name="option0" onchange="DoOutput();" id="option0" value="1" checked="checked" /> Notes</label>
+  <label for="option1"><input type="checkbox" name="option1" onchange="DoOutput();" id="option1" value="1" checked="checked" /> inches</label>
+  <label for="option2"><input type="checkbox" name="option2" onchange="DoOutput();" id="option2" value="1" checked="checked" /> mm</label>
+</p>
+<p id="toutput">Output</p>
+</div>
+
+<p><button id="calculate" onClick="calculate(); return false;">Calculate</button> <button id="addstring">Add string</button> <button onclick="DoOutput(); $('#output').slideDown(500); return false;" id="outputb">Output</button></p>
+
+<p><a href="#top" class="abutton">Back to top</a></p>
+
+<script>
+$('#scale').change(function() {
+  $('#scale2').val((this.value * 25.4).toFixed(2));
+  calculate();
+});
+$('#scale2').change(function() {
+  $('#scale').val((this.value / 25.4).toFixed(2));
+  calculate();
+});
+$('#otension').change(function() {
+  $('#otension2').val((this.value / 0.225).toFixed(3));
+  $('.tension').val(this.value);
+  $('.tension2').val((this.value / 0.225).toFixed(3));
+  calculate();
+});
+$('#otension2').change(function() {
+  $('#otension').val((this.value * 0.225).toFixed(3));
+  $('.tension').val((this.value * 0.225).toFixed(3));
+  $('.tension2').val(this.value);
+  calculate();
+});
+
+function UpSome(tt, hh) {
+  var tfound = tnotes.indexOf($(tt).closest('tr').find('.note').val());
+  if (tfound != -1) {
+    $(tt).closest('tr').find('.note').val(tnotes[tfound + hh]);
+    $(tt).closest('tr').find('.frequency').val(frequencies[tfound + hh]);
+    calculate();
+  }
+}
+function DownSome(tt, hh) {
+  var tfound = tnotes.indexOf($(tt).closest('tr').find('.note').val());
+  if (tfound > hh - 1) {
+    $(tt).closest('tr').find('.note').val(tnotes[tfound - hh]);
+    $(tt).closest('tr').find('.frequency').val(frequencies[tfound - hh]);
+    calculate();
+  }
+}
+$('.note').change(function() {
+  this.value = this.value.toUpperCase()
+  var tfound = tnotes.indexOf(this.value);
+  if (tfound != -1) {
+    $(this).closest('tr').find('.frequency').val(frequencies[tfound]);
+    calculate();
+  }
+});
+$('.frequency').change(function() {
+  $(this).closest('tr').find('.note').val('');
+  calculate();
+});
+$('.tension').change(function() {
+  $(this).closest('tr').find('.tension2').val((this.value / 0.225).toFixed(3));
+  calculate();
+});
+$('.tension2').change(function() {
+  $(this).closest('tr').find('.tension').val((this.value * 0.225).toFixed(3));
+  calculate();
+});
+
+var rowi = 0;
+$("#addstring").click(function() {
+  var tchecked = $('.wound:checked:last');
+  var tnewrow = $('#stringstable tr:last').clone(true);
+  var rowt = rowi + 1;
+  tnewrow.find('.wound').attr('name', 'wound'+rowt);
+  tnewrow.find('#wound'+rowi+'-0').attr('id', 'wound'+rowt+'-0');
+  tnewrow.find('#wound'+rowi+'-1').attr('id', 'wound'+rowt+'-1');
+  tnewrow.find('label[for=wound'+rowi+'-0]').attr('for', 'wound'+rowt+'-0');
+  tnewrow.find('label[for=wound'+rowi+'-1]').attr('for', 'wound'+rowt+'-1');
+  tnewrow.find('.snumber').text((rowt + 1)+".");
+  rowi = rowt;
+  tchecked.attr('checked', 'checked');
+  tnewrow.insertAfter('#stringstable tr:last');
+  return false;
+});
+function ChangeMaterial(tdensity, tkfactor) {
+  $('#density').val(tdensity);
+  if (tkfactor == -1) {
+    $('#noinfo').show();
+  } else {
+    $('#noinfo').hide();
+    $('#kfactor').val(tkfactor);
+  }
+  calculate();
+}
+function ChangeScale(tscale) {
+  $('#scale').val(tscale);
+  $('#scale2').val((tscale * 25.4).toFixed(2));
+  calculate();
+}
+function ChangeScale2(tscale) {
+  $('#scale2').val(tscale);
+  $('#scale').val((tscale / 25.4).toFixed(2));
+  calculate();
+}
+function calculate() {
+  $('.stringtr').each(function() {
+    var tresult = (Math.sqrt($(this).find('.tension2').val()) / ($(this).find('.frequency').val() * ($('#scale2').val() / 1000) * Math.sqrt(Math.PI * $('#density').val()))) * 1000;
+    if ($(this).find('.wound:checked').val() == 1)
+      tresult /= $('#kfactor').val();
+    $(this).find('.result2').text(tresult.toFixed(3)+" mm");
+    tresult /= 25.4;
+    $(this).find('.result').text(tresult.toFixed(3)+" inch");
+  });
+}
+function DoOutput() {
+  if ($('#option0:checked').val() == 1)
+    var toption0 = true;
+  else
+    var toption0 = false;
+  if ($('#option1:checked').val() == 1)
+    var toption1 = true;
+  else
+    var toption1 = false;
+  if ($('#option2:checked').val() == 1)
+    var toption2 = true;
+  else
+    var toption2 = false;
+  
+  var afternote = ': ';
+  var beforein = '';
+  var afterin = '';
+  var beforemm = ' (';
+  var aftermm = ')';
+  var afterall = ', ';
+  var outputt = '';
+  $('.stringtr').each(function() {
+    if (toption0)
+      outputt += $(this).find('.note').val() + afternote;
+    if (toption1)
+      outputt += beforein + $(this).find('.result').text() + afterin;
+    if (toption2)
+      outputt += beforemm + $(this).find('.result2').text() + aftermm;
+    outputt += afterall;
+  });
+  $('#toutput').text(outputt);
+}
+</script>
+
+<div id="footer">
+Thanks to <a href="http://terrydownsmusic.com/">Terry Downs</a> for his <a href="http://terrydownsmusic.com/technotes/StringGauges/STRINGS.HTM">technical notes for Design of Custom String Gauges</a><br />
+&copy; 2010 <a href="http://future.millenniumweb.net/">Zdeněk Gromnica</a>
+</div>
+</body>
+</html>

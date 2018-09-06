@@ -1,0 +1,39 @@
+.LOG
+
+15:08 8.9.2010
+v1.01
++ 'Tones and their frequencies' hidden, can be shown
++ 'Tunings and scale lengths' header
+* Fixed duplicate 'otension' change event
++ On change of any field, the strings will recalculate
+* font-size: 14px;
+- Removed string number
+
+19:59 8.9.2010
+v1.1
++ more strings, adding strings
+
+22:55 8.9.2010
+v1.11
++ Added string number
+
+v1.2
++ nylon strings, and any other densities
+* moved table and info into h2 'Info'
++ 'String type' selection - Steel/Iron, Brass, Carbon, Gut, Nylon
++ clicking on a scale will change it
+
+5:21 9.9.2010
+v1.21
++ arrows for changing the note by semitone and octave
+
+14:07 9.9.2010
+v1.22
+* Notes change to uppercase in the input instead of being checked in every function
++ Output with Notes, Inch, mm
+
+TODO:
++ clicking on an instrument will change the strings to it
++ Different temperaments
++ Different basenote
++ More output options
