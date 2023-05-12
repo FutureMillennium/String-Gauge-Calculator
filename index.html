@@ -184,7 +184,7 @@ for (var i = -20; i < 148; i++) {
     <th>Gauge (mm)</th>
   </tr>
   <tr class="stringtr">
-    <td><span class="snumber">1.</span></td>
+    <td><span class="snumber">1.</span> <a href="#" onclick="MoveStringBy(this, -1); return false;">▲</a> <a href="#" onclick="MoveStringBy(this, +1); return false;">▼</a></td>
     <td><input type="text" class="note" size="5" value="A4" /> <a href="#" onclick="DownSome(this, 1); return false;">◄</a> <a href="#" onclick="UpSome(this, 1); return false;">►</a> <a href="#" onclick="DownSome(this, 12); return false;">▼</a> <a href="#" onclick="UpSome(this, 12); return false;">▲</a></td>
     <td><label for="frequency"><input type="text" size="10" class="frequency" value="440" /> Hz</label></td>
     <td><label for="wound0-0"><input type="radio" name="wound" class="wound" onchange="calculate();" id="wound0-0" value="0" checked="checked" /> Plain</label> <label for="wound0-1"><input type="radio" name="wound" class="wound" onchange="calculate();" id="wound0-1" value="1" /> Wound</label></td>
@@ -256,6 +256,33 @@ function AdjustAllNotes(bySemitone) {
   });
   calculate();
 }
+
+// Move/swap string up or down
+function MoveStringBy(me, by) {
+  var trow = $(me).closest('tr');
+  var trow2;
+  if (by == -1) {
+    trow2 = trow.prev();
+    // check if it's not the header row
+    if (trow2.find('.snumber').length == 0)
+      return;
+
+    trow.insertBefore(trow2);
+  } else if (by == 1) {
+    trow2 = trow.next();
+    // check if it's not the last row
+    if (trow2.find('.snumber').length == 0)
+      return;
+
+    trow.insertAfter(trow2);
+  }
+
+  // swap string numbers
+  var tnum = trow.find('.snumber').text();
+  trow.find('.snumber').text(trow2.find('.snumber').text());
+  trow2.find('.snumber').text(tnum);
+}
+
 $('.note').change(function() {
   this.value = this.value.toUpperCase()
   var tfound = tnotes.indexOf(this.value);
