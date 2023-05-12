@@ -1,11 +1,10 @@
 <html>
 <head>
-  <title>String gauge calculator v1.22</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-  <meta name="author" content="Zdeněk Gromnica" /> 
-  <meta name="Description" content="" /> 
-  <meta name="copyright" content="© 2010 Zdeněk Gromnica" /> 
-  <meta name="content-language" content="en" /> 
+  <title>String gauge calculator v1.23</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="author" content="Zdeněk Gromnica" />
+  <meta name="copyright" content="© 2010–2023 Zdeněk Gromnica" />
+  <meta name="content-language" content="en" />
   <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
   <style>
 body {
@@ -94,7 +93,7 @@ acronym {
 <body>
 <h1 id="top">String gauge calculator</h1>
 
-<p>Version 1.22 by <a href="http://futuremillennium.com/">Zdeněk Gromnica a.k.a. FutureMillennium</a>. JavaScript must be enabled.</p>
+<p>Version 1.23 by <a href="http://futuremillennium.com/">Zdeněk Gromnica a.k.a. FutureMillennium</a>. JavaScript must be enabled.</p>
 
 <p><a href="#calculate-string-gauges" class="abutton">Calculate string gauges</a></p>
 
@@ -203,6 +202,8 @@ for (var i = -20; i < 148; i++) {
 <p id="toutput">Output</p>
 </div>
 
+<p><a href="#" onclick="AdjustAllNotes(-1); return false;">◄</a> <a href="#" onclick="AdjustAllNotes(+1); return false;">►</a> <a href="#" onclick="AdjustAllNotes(-12); return false;">▼</a> <a href="#" onclick="AdjustAllNotes(+12); return false;">▲</a></p>
+
 <p><button id="calculate" onClick="calculate(); return false;">Calculate</button> <button id="addstring">Add string</button> <button onclick="DoOutput(); $('#output').slideDown(500); return false;" id="outputb">Output</button></p>
 
 <p><a href="#top" class="abutton">Back to top</a></p>
@@ -244,6 +245,16 @@ function DownSome(tt, hh) {
     $(tt).closest('tr').find('.frequency').val(frequencies[tfound - hh]);
     calculate();
   }
+}
+function AdjustAllNotes(bySemitone) {
+  $('.note').each(function() {
+    var tfound = tnotes.indexOf(this.value);
+    if (tfound != -1) {
+      $(this).val(tnotes[tfound + bySemitone]);
+      $(this).closest('tr').find('.frequency').val(frequencies[tfound + bySemitone]);
+    }
+  });
+  calculate();
 }
 $('.note').change(function() {
   this.value = this.value.toUpperCase()
@@ -348,7 +359,7 @@ function DoOutput() {
 
 <div id="footer">
 Thanks to <a href="http://terrydownsmusic.com/">Terry Downs</a> for his <a href="http://terrydownsmusic.com/technotes/StringGauges/STRINGS.HTM">technical notes for Design of Custom String Gauges</a><br />
-&copy; 2010 <a href="http://futuremillennium.com/">Zdeněk Gromnica</a>
+&copy; 2010–2023 <a href="http://futuremillennium.com/">Zdeněk Gromnica</a>
 </div>
 </body>
 </html>
